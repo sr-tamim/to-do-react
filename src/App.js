@@ -46,7 +46,7 @@ function App() {
       <div className='tw-max-w-lg tw-mx-auto tw-my-8'>
         <form onSubmit={addNewTask} className='tw-flex tw-flex-col'>
           <textarea ref={taskInput} placeholder='write new task'
-            className='tw-resize-y tw-p-2 tw-mb-4 tw-caret-primary tw-border-2 tw-border-primary tw-rounded-md tw-border-dashed tw-drop-shadow-md'
+            className='tw-resize-y tw-p-2 tw-mb-4 tw-caret-primary tw-border-2 tw-border-primary tw-rounded-md tw-border-dashed tw-drop-shadow-md focus_tw-outline-0'
             required></textarea>
           <input type="submit" value="Add task"
             className='tw-font-bold tw-text-primary tw-cursor-pointer tw-py-1 tw-border-primary tw-border-4 tw-border-double hover_tw-bg-red-50' />
