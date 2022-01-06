@@ -36,12 +36,20 @@ function App() {
 
   return (
     <div className="App tw-px-3 tw-max-w-screen-md tw-mx-auto">
-      <h1 className='tw-text-4xl tw-text-primary'>To do app</h1>
+      <div className='tw-text-center'>
+        <h1 className='tw-text-4xl tw-text-primary tw-font-extrabold tw-mt-6'>To do app</h1>
+        <h2 className='tw-text-xs tw-text-zinc-500 tw-font-medium tw-my-2'>
+          Made by <a href="http://linkedin.com/in/srtamim" target='_blank' rel='noreferrer' className='tw-underline hover_tw-text-primary hover_tw-no-underline'>SR TAMIM</a>
+        </h2>
+      </div>
+
       <div className='tw-max-w-lg tw-mx-auto tw-my-8'>
         <form onSubmit={addNewTask} className='tw-flex tw-flex-col'>
-          <textarea ref={taskInput} placeholder='write new task' className='tw-resize-y'></textarea>
+          <textarea ref={taskInput} placeholder='write new task'
+            className='tw-resize-y tw-p-2 tw-mb-4 tw-caret-primary tw-border-2 tw-border-primary tw-rounded-md tw-border-dashed tw-drop-shadow-md'
+            required></textarea>
           <input type="submit" value="Add task"
-            className='tw-bg-primary tw-text-slate-50 tw-cursor-pointer' />
+            className='tw-font-bold tw-text-primary tw-cursor-pointer tw-py-1 tw-border-primary tw-border-4 tw-border-double hover_tw-bg-red-50' />
         </form>
       </div>
       <div id="allTasks">
