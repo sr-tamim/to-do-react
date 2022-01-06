@@ -35,9 +35,9 @@ function App() {
   }
 
   return (
-    <div className="App tw-px-3">
+    <div className="App tw-px-3 tw-max-w-screen-md tw-mx-auto">
       <h1 className='tw-text-4xl tw-text-primary'>To do app</h1>
-      <div className='tw-max-w-xl tw-mx-auto tw-my-8'>
+      <div className='tw-max-w-lg tw-mx-auto tw-my-8'>
         <form onSubmit={addNewTask} className='tw-flex tw-flex-col'>
           <textarea ref={taskInput} placeholder='write new task' className='tw-resize-y'></textarea>
           <input type="submit" value="Add task"
