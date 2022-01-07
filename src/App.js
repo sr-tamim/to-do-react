@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import './App.css';
 import SingleTask from './components/SingleTask/SingleTask';
 
@@ -6,13 +6,15 @@ import SingleTask from './components/SingleTask/SingleTask';
 
 function App() {
   const taskInput = useRef(null);
-  const [tasks, setTasks] = useState([
-    {
-      timeStamp: Date.now(),
-      toDo: 'the quick brown fox jumps over a lazy dog',
-      taskStatus: 'pending'
-    }
-  ])
+  const [tasks, setTasks] = useState(null)
+  const [tasksLoading, setTasksLoading] = useState(true)
+
+  useEffect(() => {
+    fetch('https://to-do-srt.herokuapp.com/tasks')
+      .then(res => res.json())
+      .then(data => setTasks(data))
+      .finally(() => setTasksLoading(false))
+  }, [tasksLoading])
 
 
   function addNewTask(e) {
@@ -27,11 +29,33 @@ function App() {
       toDo: taskInput.current.value,
       taskStatus: 'pending'
     }
-    setTasks([...tasks, newTask])
+
+    fetch('https://to-do-srt.herokuapp.com/tasks', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(newTask)
+    })
+      .then(res => res.json())
+      .then(data => {
+        if (data.insertedId) {
+          e.target.reset()
+          setTasksLoading(true)
+        }
+      })
   }
 
   function deleteTask(timeStamp) {
-    setTasks(tasks.filter(task => task.timeStamp !== timeStamp))
+    fetch('https://to-do-srt.herokuapp.com/tasks', {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ timeStamp })
+    })
+      .then(res => res.json())
+      .then(data => data.deletedCount === 1 && setTasksLoading(true))
   }
 
   return (
@@ -52,9 +76,14 @@ function App() {
             className='tw-font-bold tw-text-primary tw-cursor-pointer tw-py-1 tw-border-primary tw-border-4 tw-border-double hover_tw-bg-red-50' />
         </form>
       </div>
-      <div id="allTasks">
-        {tasks.map((task, i) => <SingleTask sl={i + 1} task={task} functions={{ deleteTask }} key={i} />)}
-      </div>
+      {tasksLoading ? <p className='tw-text-4xl tw-text-center tw-my-24'>Loading...</p> :
+        <div id="allTasks">
+          {tasks &&
+            tasks.map((task, i) => <SingleTask sl={i + 1} task={task}
+              functions={{ deleteTask }} key={i} />)
+          }
+        </div>
+      }
     </div>
   );
 }
