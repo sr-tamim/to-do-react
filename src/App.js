@@ -9,16 +9,22 @@ function App() {
   const [tasks, setTasks] = useState(null)
   const [tasksLoading, setTasksLoading] = useState(true)
 
-  useEffect(() => {
+  // sort tasks to show new task on top
+  tasks && tasks.sort((a, b) => b.timeStamp - a.timeStamp)
+
+  useEffect(loadTasks, [])
+  // load all tasks function
+  function loadTasks() {
     fetch('https://to-do-srt.herokuapp.com/tasks')
       .then(res => res.json())
       .then(data => setTasks(data))
       .finally(() => setTasksLoading(false))
-  }, [tasksLoading])
+  }
 
-
+  // add new task function
   function addNewTask(e) {
     e.preventDefault()
+    // check the input is empty or not
     if (taskInput.current.value.length === 0) {
       console.error('Input empty')
       return
@@ -29,7 +35,7 @@ function App() {
       toDo: taskInput.current.value,
       taskStatus: 'pending'
     }
-
+    // send new task to server
     fetch('https://to-do-srt.herokuapp.com/tasks', {
       method: 'POST',
       headers: {
@@ -41,11 +47,12 @@ function App() {
       .then(data => {
         if (data.insertedId) {
           e.target.reset()
-          setTasksLoading(true)
+          loadTasks()
         }
       })
   }
 
+  // delete any task fron task list
   function deleteTask(timeStamp) {
     fetch('https://to-do-srt.herokuapp.com/tasks', {
       method: 'DELETE',
@@ -55,11 +62,23 @@ function App() {
       body: JSON.stringify({ timeStamp })
     })
       .then(res => res.json())
-      .then(data => data.deletedCount === 1 && setTasksLoading(true))
+      .then(data => data.deletedCount === 1 && loadTasks())
+  }
+
+  // change any state of any task
+  function changeTaskState(changedTask) {
+    fetch('https://to-do-srt.herokuapp.com/tasks', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(changedTask)
+    }).then(res => res.json())
+      .then(data => data.modifiedCount && loadTasks())
   }
 
   return (
-    <div className="App tw-px-3 tw-max-w-screen-md tw-mx-auto">
+    <div className="tw-px-3 tw-max-w-screen-md tw-mx-auto">
       <div className='tw-text-center'>
         <h1 className='tw-text-4xl tw-text-primary tw-font-extrabold tw-mt-6'>To do app</h1>
         <h2 className='tw-text-xs tw-text-zinc-500 tw-font-medium tw-my-2'>
@@ -80,7 +99,7 @@ function App() {
         <div id="allTasks">
           {tasks &&
             tasks.map((task, i) => <SingleTask sl={i + 1} task={task}
-              functions={{ deleteTask }} key={i} />)
+              functions={{ deleteTask, changeTaskState }} key={i} />)
           }
         </div>
       }
