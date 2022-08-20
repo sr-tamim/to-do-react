@@ -33,7 +33,8 @@ const useTasks = () => {
         const newTask = {
             taskAddedTime: Date.now(),
             toDo: taskInputValue,
-            taskStatus: 'pending'
+            taskDone: false,
+            taskDoneTime: null
         }
 
         // save task in localstorage
@@ -53,7 +54,7 @@ const useTasks = () => {
     function changeTaskState(changedTask) {
         const newData = [
             ...tasks.filter(task => task.taskAddedTime !== changedTask.taskAddedTime),
-            { ...changedTask, taskDoneTime: Date.now() }
+            changedTask
         ]
         saveTasks(newData)
         loadTasks()

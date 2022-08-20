@@ -24,7 +24,7 @@ function App() {
             onChange={e => setTaskInputValue(e.target.value)}
             className='rounded-b-none' />
           <Button type="submit" className='rounded-t-none'
-            disabled={!taskInputValue}>Add</Button>
+            disabled={!taskInputValue} variant="gradient">Add</Button>
         </form>
       </div>
       <div id="allTasks">
