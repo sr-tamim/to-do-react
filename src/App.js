@@ -1,7 +1,6 @@
-import './App.css';
-import SingleTask from './components/SingleTask/SingleTask';
 import { Button, Input, Typography } from "@material-tailwind/react";
 import useTasks from './hooks/useTasks';
+import ToDoBody from './components/ToDoBody/ToDoBody';
 
 
 
@@ -28,10 +27,7 @@ function App() {
             disabled={!taskInputValue} variant="gradient">Add</Button>
         </form>
       </div>
-      <div id="allTasks">
-        {tasks.map((task, i) => <SingleTask task={task}
-          functions={{ deleteTask, changeTaskState }} key={i} />)}
-      </div>
+      <ToDoBody taskState={{ tasks, deleteTask, changeTaskState }} />
     </div>
   );
 }
