@@ -19,11 +19,12 @@ function App() {
       </div>
 
       <div className='max-w-lg mx-auto my-8'>
-        <form onSubmit={addNewTask} className='flex flex-col'>
+        <form onSubmit={addNewTask} className='flex flex-col md:flex-row'>
           <Input label='write new task'
             onChange={e => setTaskInputValue(e.target.value)}
-            className='rounded-b-none' />
-          <Button type="submit" className='rounded-t-none'
+            className='grow rounded-b-none md:rounded-l-lg md:rounded-r-none'
+            labelProps={{ className: 'md:after:rounded-none' }} />
+          <Button type="submit" className='rounded-t-none md:rounded-r-lg md:rounded-l-none'
             disabled={!taskInputValue} variant="gradient">Add</Button>
         </form>
       </div>

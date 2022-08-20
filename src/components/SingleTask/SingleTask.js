@@ -1,4 +1,4 @@
-import { Checkbox, IconButton, Typography } from '@material-tailwind/react';
+import { IconButton, Typography } from '@material-tailwind/react';
 import React from 'react';
 import './SingleTask.css'
 
