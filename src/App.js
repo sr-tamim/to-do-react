@@ -1,13 +1,13 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import './App.css';
 import SingleTask from './components/SingleTask/SingleTask';
+import { Button, Input } from "@material-tailwind/react";
 
 
 
 function App() {
-  const taskInput = useRef(null);
+  const [taskInputValue, setTaskInputValue] = useState("")
   const [tasks, setTasks] = useState([])
-  console.log(tasks)
 
 
   useEffect(loadTasks, [])
@@ -30,20 +30,21 @@ function App() {
   function addNewTask(e) {
     e.preventDefault()
     // check the input is empty or not
-    if (taskInput.current.value.length === 0) {
+    if (taskInputValue.length === 0) {
       console.error('Input empty')
       return
     }
 
     const newTask = {
       taskAddedTime: Date.now(),
-      toDo: taskInput.current.value,
+      toDo: taskInputValue,
       taskStatus: 'pending'
     }
 
     // save task in localstorage
     saveTasks([...tasks, newTask])
     e.target.reset()
+    setTaskInputValue('')
     loadTasks()
   }
 
@@ -64,21 +65,21 @@ function App() {
   }
 
   return (
-    <div className="tw-px-3 tw-max-w-screen-md tw-mx-auto">
-      <div className='tw-text-center'>
-        <h1 className='tw-text-4xl tw-text-primary tw-font-extrabold tw-mt-6'>To do app</h1>
-        <h2 className='tw-text-xs tw-text-zinc-500 tw-font-medium tw-my-2'>
-          Made by <a href="http://linkedin.com/in/srtamim" target='_blank' rel='noreferrer' className='tw-underline hover_tw-text-primary hover_tw-no-underline'>SR TAMIM</a>
+    <div className="px-3 max-w-screen-md mx-auto">
+      <div className='text-center'>
+        <h1 className='text-4xl text-primary font-extrabold mt-6'>To do app</h1>
+        <h2 className='text-xs text-zinc-500 font-medium my-2'>
+          Made by <a href="https://sr-tamim.vercel.app" target='_blank' rel='noreferrer' className='underline hover_text-primary hover_no-underline'>SR TAMIM</a>
         </h2>
       </div>
 
-      <div className='tw-max-w-lg tw-mx-auto tw-my-8'>
-        <form onSubmit={addNewTask} className='tw-flex tw-flex-col'>
-          <textarea ref={taskInput} placeholder='write new task'
-            className='tw-resize-y tw-p-2 tw-mb-4 tw-caret-primary tw-border-2 tw-border-primary tw-rounded-md tw-border-dashed tw-drop-shadow-md focus_tw-outline-0'
-            required></textarea>
-          <input type="submit" value="Add task"
-            className='tw-font-bold tw-text-primary tw-cursor-pointer tw-py-1 tw-border-primary tw-border-4 tw-border-double hover_tw-bg-red-50' />
+      <div className='max-w-lg mx-auto my-8'>
+        <form onSubmit={addNewTask} className='flex flex-col'>
+          <Input label='write new task'
+            onChange={e => setTaskInputValue(e.target.value)}
+            className='rounded-b-none' />
+          <Button type="submit" className='rounded-t-none'
+            disabled={!taskInputValue}>Add</Button>
         </form>
       </div>
       <div id="allTasks">
