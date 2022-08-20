@@ -13,7 +13,7 @@ const SingleTask = ({ task, functions }) => {
     const timeDifference = pastTime => Math.ceil((Date.now() - pastTime) / (1000 * 60 * 60))
 
     return (
-        <div className='flex items-center p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300'>
+        <div className='flex items-center bg-[#ffffff66] hover:backdrop-blur-sm p-4 rounded-lg shadow-md hover:shadow-lg transition duration-300'>
             <div className='grow'>
                 <Typography variant="h5" className={`first-letter:uppercase ${task.taskDone && 'line-through'}`}>{task.toDo}</Typography>
 
