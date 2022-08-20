@@ -1,0 +1,13 @@
+@tailwind components;
+
+@layer components {
+    .taskInformations {
+        @apply flex items-center;
+    }
+
+    .taskInformations>*:not(:last-child)::after {
+        content: '\2022';
+        font-size: 1rem;
+        margin: 0 0.4rem;
+    }
+}
