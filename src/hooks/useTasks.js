@@ -1,7 +1,14 @@
 import { useEffect, useState } from "react";
 
+const defaultTask = {
+    taskAddedTime: 1660971431388,
+    toDo: "welcome to your task manager",
+    taskDone: false,
+    taskDoneTime: null
+}
+
 const useTasks = () => {
-    const [tasks, setTasks] = useState([])
+    const [tasks, setTasks] = useState([defaultTask])
     const [taskInputValue, setTaskInputValue] = useState("")
 
 

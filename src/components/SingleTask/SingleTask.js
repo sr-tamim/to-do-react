@@ -15,7 +15,7 @@ const SingleTask = ({ task, functions }) => {
     return (
         <div className='flex items-center px-3 py-4 border-b-2 hover:bg-gray-100'>
             <div className='grow'>
-                <Typography variant="h5" className={`font-bold text-xl ${task.taskDone && 'line-through'}`}>{task.toDo}</Typography>
+                <Typography variant="h5" className={`capitalize ${task.taskDone && 'line-through'}`}>{task.toDo}</Typography>
 
                 <div className="taskInformations">
                     <time className="text-gray-500 text-xs"
