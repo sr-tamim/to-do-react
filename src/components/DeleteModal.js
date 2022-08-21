@@ -13,15 +13,12 @@ const DeleteModal = () => {
     return (
         <>
             <DialogHeader>Are you sure?</DialogHeader>
-            <DialogBody divider>
-                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Accusamus ad
-                reprehenderit omnis perspiciatis aut odit! Unde architecto
-                perspiciatis, dolorum dolorem iure quia saepe autem accusamus eum
-                praesentium magni corrupti explicabo!
+            <DialogBody>
+                Deleting a task is permanent. This can't be undone. There is no recycle bin for your deleted tasks. So be 100% sure before clicking "Delete" button.
             </DialogBody>
-            <DialogFooter>
-                <Button>Delete</Button>
-                <Button onClick={closeModal}>Don't Delete</Button>
+            <DialogFooter className="gap-4">
+                <Button color="red" variant="gradient" >Delete</Button>
+                <Button onClick={closeModal} variant="gradient" >Don't Delete</Button>
             </DialogFooter>
         </>
     );

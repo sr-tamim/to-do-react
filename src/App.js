@@ -37,7 +37,7 @@ function App() {
         <ToDoBody taskState={{ tasks, deleteTask, changeTaskState }} />
       </div>
 
-      {modalBody && <Dialog open={modalOpen} handler={closeModal}>
+      {modalBody && <Dialog open={modalOpen} handler={closeModal} size="xl" className={`w-11/12 min-w-min max-w-sm`}>
         {modalBody}
       </Dialog>}
     </ModalContext.Provider>
