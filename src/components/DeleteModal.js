@@ -7,7 +7,7 @@ import {
 import { useContext } from "react";
 import { ModalContext } from "../App";
 
-const DeleteModal = () => {
+const DeleteModal = ({deleteTask}) => {
     const { closeModal } = useContext(ModalContext)
 
     return (
@@ -17,7 +17,7 @@ const DeleteModal = () => {
                 Deleting a task is permanent. This can't be undone. There is no recycle bin for your deleted tasks. So be 100% sure before clicking "Delete" button.
             </DialogBody>
             <DialogFooter className="gap-4">
-                <Button color="red" variant="gradient" >Delete</Button>
+                <Button color="red" variant="gradient" onClick={deleteTask} >Delete</Button>
                 <Button onClick={closeModal} variant="gradient" >Don't Delete</Button>
             </DialogFooter>
         </>

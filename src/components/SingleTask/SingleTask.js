@@ -16,7 +16,7 @@ const SingleTask = ({ task, functions }) => {
 
     const { setModalBody, setModalOpen } = useContext(ModalContext)
     const openDeleteModal = (taskAddedTime) => {
-        setModalBody(<DeleteModal />)
+        setModalBody(<DeleteModal deleteTask={()=>deleteTask(taskAddedTime)} />)
         setModalOpen(true)
     }
 
