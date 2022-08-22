@@ -33,9 +33,13 @@ function App() {
                 className='grow rounded-b-none md:rounded-l-lg md:rounded-r-none'
                 labelProps={{ className: 'md:after:rounded-none' }} />
 
-              <div className="absolute right-0 top-0 w-12 h-full flex justify-center items-center">
+              <div className="absolute right-1 top-1 bottom-1 w-12 flex justify-center items-center bg-white">
                 <input type="date" title="Add due date"
-                  className="bg-transparent focus:outline-0 focus:scale-150 transition-transform" />
+                onChange={e=>{
+                  (e.target.value) ? e.target.setAttribute('hasValue', true) :
+                  e.target.removeAttribute('hasValue')
+                }}
+                  className="bg-transparent focus:outline-0 focus:scale-125 transition-transform" />
               </div>
             </div>
 

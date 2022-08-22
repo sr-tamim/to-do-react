@@ -23,6 +23,16 @@ code {
 ::-webkit-datetime-edit {
   display: none;
 }
+
 ::-webkit-datetime-edit-fields-wrapper {
   display: none;
+}
+
+::-webkit-calendar-picker-indicator {
+  background: url('../public/calendar-days-regular.svg') no-repeat;
+  background-size: contain;
+  background-position: center;
+}
+[hasValue]::-webkit-calendar-picker-indicator {
+  background: url('../public/calendar-check-regular.svg') no-repeat;
 }
