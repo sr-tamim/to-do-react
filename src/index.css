@@ -19,3 +19,10 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+::-webkit-datetime-edit {
+  display: none;
+}
+::-webkit-datetime-edit-fields-wrapper {
+  display: none;
+}

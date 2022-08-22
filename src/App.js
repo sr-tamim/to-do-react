@@ -26,12 +26,22 @@ function App() {
 
         <div className='max-w-lg mx-auto my-8'>
           <form onSubmit={addNewTask} className='flex flex-col md:flex-row'>
-            <Input label='write new task'
-              onChange={e => setTaskInputValue(e.target.value)}
-              className='grow rounded-b-none md:rounded-l-lg md:rounded-r-none'
-              labelProps={{ className: 'md:after:rounded-none' }} />
+
+            <div className="flex relative grow">
+              <Input label='write new task'
+                onChange={e => setTaskInputValue(e.target.value)}
+                className='grow rounded-b-none md:rounded-l-lg md:rounded-r-none'
+                labelProps={{ className: 'md:after:rounded-none' }} />
+
+              <div className="absolute right-0 top-0 w-12 h-full flex justify-center items-center">
+                <input type="date" title="Add due date"
+                  className="bg-transparent focus:outline-0 focus:scale-150 transition-transform" />
+              </div>
+            </div>
+
             <Button type="submit" className='rounded-t-none md:rounded-r-lg md:rounded-l-none'
               disabled={!taskInputValue} variant="gradient">Add</Button>
+
           </form>
         </div>
         <ToDoBody taskState={{ tasks, deleteTask, changeTaskState }} />
