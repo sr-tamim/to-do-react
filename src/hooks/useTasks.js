@@ -37,11 +37,13 @@ const useTasks = () => {
             return
         }
 
+        
         const newTask = {
             taskAddedTime: Date.now(),
             toDo: taskInputValue,
             taskDone: false,
-            taskDoneTime: null
+            taskDoneTime: null,
+            dueDate: (e.target.querySelector('input[type="date"]').value)
         }
 
         // save task in localstorage

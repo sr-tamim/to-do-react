@@ -16,7 +16,7 @@ const SingleTask = ({ task, functions }) => {
 
     const { setModalBody, setModalOpen } = useContext(ModalContext)
     const openDeleteModal = (taskAddedTime) => {
-        setModalBody(<DeleteModal deleteTask={()=>deleteTask(taskAddedTime)} />)
+        setModalBody(<DeleteModal deleteTask={() => deleteTask(taskAddedTime)} />)
         setModalOpen(true)
     }
 
@@ -27,6 +27,7 @@ const SingleTask = ({ task, functions }) => {
 
                 <div className="taskInformations">
                     <time className="text-gray-500 text-xs"
+                        dateTime={taskAddedTime}
                         title={taskAddedTime.toLocaleString()}>
                         Created on {
                             timeDifference(task.taskAddedTime) < 24 ? `${taskAddedTime.getHours()}:${taskAddedTime.getMinutes()}`
@@ -35,11 +36,17 @@ const SingleTask = ({ task, functions }) => {
                     </time>
                     {task.taskDoneTime &&
                         <time className='text-gray-500 text-xs'
+                            dateTime={taskDoneTime}
                             title={taskDoneTime.toLocaleString()}>
                             Done on {
                                 timeDifference(task.taskDoneTime) < 24 ? `${taskDoneTime.getHours()}:${taskDoneTime.getMinutes()}`
                                     : `${taskDoneTime.getDate()} ${months[taskDoneTime.getMonth()]}`
                             }
+                        </time>}
+                    {task.dueDate &&
+                        <time className='text-gray-500 text-xs'
+                            dateTime={task.dueDate}>
+                            Due Date: {`${task.dueDate.split('-')[2]} ${months[task.dueDate.split('-')[1] - 1]}`}
                         </time>}
                 </div>
             </div>
