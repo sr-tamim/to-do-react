@@ -1,4 +1,4 @@
-import { Button, IconButton, Input, Typography } from "@material-tailwind/react";
+import { Button, IconButton, Input, Menu, MenuHandler, MenuItem, MenuList, Typography } from "@material-tailwind/react";
 import useTasks from './hooks/useTasks';
 import ToDoBody from './components/ToDoBody/ToDoBody';
 import useModal from "./hooks/useModal";
@@ -7,8 +7,8 @@ import { createContext, useState } from "react";
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import firebaseConfig from "./firebase.config";
-import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged } from "firebase/auth";
-import { FacebookIcon, GoogleIcon, TwitterIcon } from "./icons";
+import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "firebase/auth";
+import { FacebookIcon, GoogleIcon, LoadingSpinner, TwitterIcon } from "./icons";
 
 const firebaseApp = initializeApp(firebaseConfig)
 
@@ -25,6 +25,7 @@ function App() {
 
 
   const [user, setUser] = useState(null)
+  const [loginProcessing, setLoginProcessing] = useState(false)
   const [authLoadingOnRender, setAuthLoadingOnRender] = useState(true)
   onAuthStateChanged(firebaseAuth, newUser => {
     (newUser && !user) && setUser(newUser.providerData[0]);
@@ -33,9 +34,15 @@ function App() {
   })
 
   function googleLogin() {
+    setLoginProcessing(true)
     const provider = new GoogleAuthProvider()
     signInWithPopup(firebaseAuth, provider)
-      .catch((error) => console.dir(error));
+      .catch((error) => console.dir(error))
+      .finally(() => setLoginProcessing(false))
+  }
+  function logOut() {
+    signOut(firebaseAuth).catch((error) => console.dir(error))
+      .finally(() => setLoginProcessing(false))
   }
 
   return (
@@ -70,30 +77,41 @@ function App() {
 
             <Button type="submit" className='rounded-t-none md:rounded-r-lg md:rounded-l-none'
               disabled={!taskInputValue} variant="gradient">Add</Button>
-
           </form>
         </div>
 
-        <div className="text-center">
-          {!user ? <div>
-            <Typography className="font-bold text-xs">Login to sync through devices</Typography>
-            <div>
-              {/* google button */}
-              <IconButton variant="text" onClick={googleLogin}>
-                <GoogleIcon />
-              </IconButton>
-              <IconButton variant="text">
-                <FacebookIcon />
-              </IconButton>
-              <IconButton variant="text">
-                <TwitterIcon />
-              </IconButton>
+        {loginProcessing ? <IconButton variant="text"
+          className="block mx-auto w-14 h-14 max-w-full max-h-full">
+          <LoadingSpinner />
+        </IconButton>
+          : !authLoadingOnRender && <div className="text-center">
+            {!user ? <div>
+              <Typography className="font-bold text-xs">Login to sync through devices</Typography>
+              <div>
+                {/* google button */}
+                <IconButton variant="text" onClick={googleLogin}>
+                  <GoogleIcon />
+                </IconButton>
+                <IconButton variant="text">
+                  <FacebookIcon />
+                </IconButton>
+                <IconButton variant="text">
+                  <TwitterIcon />
+                </IconButton>
+              </div>
             </div>
-          </div>
-            : <div>
-              <Typography variant="h3">{user.displayName}</Typography>
-            </div>}
-        </div>
+              : <div>
+                <Menu>
+                  <MenuHandler>
+                    <Button variant="text" size="lg">{user.displayName}</Button>
+                  </MenuHandler>
+                  <MenuList className="font-bold">
+                    <MenuItem onClick={logOut}>Logout</MenuItem>
+                  </MenuList>
+                </Menu>
+              </div>
+            }
+          </div>}
         <ToDoBody taskState={{ tasks, deleteTask, changeTaskState }} />
       </div>
 
@@ -103,9 +121,8 @@ function App() {
 
       {authLoadingOnRender && <Dialog open={authLoadingOnRender} size="sm"
         className="bg-transparent outline-0 shadow-none">
-        <IconButton variant="text" className="block mx-auto w-24 h-24 max-w-full max-h-full focus:outline-0">
-          <svg className="fill-current w-full h-full"
-            xmlnsSvg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" version="1.0" viewBox="0 0 128 128" xmlSpace="preserve"><g><path d="M105.54 39.9l13.56-6.42s-9.67-26.82-47.05-30.1C31.68-.1 15.25 35.6 15.25 35.6S31.13 9.55 63.6 11.1c32.6 1.53 41.96 28.8 41.96 28.8zm-41.6 72.52l-1.2 14.97s28.15 5.04 49.67-25.7c23.3-33.2.46-65.34.46-65.34s14.7 26.8-2.86 54.13c-17.66 27.5-46.05 21.9-46.05 21.9zm-42.06-72.3L9.52 31.58S-8.96 53.4 6.9 87.42c17.12 36.73 56.38 33.03 56.38 33.03s-30.56-.68-45.46-29.55c-14.96-29 4.06-50.8 4.06-50.8z" /><animateTransform attributeName="transform" type="rotate" from="0 63.9 64.2" to="120 63.9 64.2" dur="480ms" repeatCount="indefinite"></animateTransform></g></svg>
+        <IconButton variant="text" className="block mx-auto text-white w-36 h-36 max-w-full max-h-full focus:outline-0">
+          <LoadingSpinner />
         </IconButton>
       </Dialog>
       }
