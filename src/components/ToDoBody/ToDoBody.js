@@ -18,7 +18,7 @@ export default function ToDoBody({ taskState }) {
     ]
 
     return (
-        <Tabs value="todo" className="my-16">
+        <Tabs value="todo" className="my-12">
             <TabsHeader className="max-w-xs mx-auto">
                 {tabs.map((value, i) => (
                     <Tab key={i} value={value} className="uppercase">
