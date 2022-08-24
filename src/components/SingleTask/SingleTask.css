@@ -2,7 +2,7 @@
 
 @layer components {
     .taskInformations {
-        @apply flex items-center;
+        @apply flex items-center flex-wrap;
     }
 
     .taskInformations>*:not(:last-child)::after {
