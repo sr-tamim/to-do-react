@@ -4,10 +4,18 @@ import ToDoBody from './components/ToDoBody/ToDoBody';
 import useModal from "./hooks/useModal";
 import { Dialog } from "@material-tailwind/react";
 import { createContext } from "react";
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+import firebaseConfig from "./firebase.config";
+import { getAuth } from "firebase/auth";
+
+const firebaseApp = initializeApp(firebaseConfig)
 
 export const ModalContext = createContext()
 
 function App() {
+  const firebaseAuth = getAuth(firebaseApp)
+  
   const { tasks, taskInputValue, setTaskInputValue,
     addNewTask, deleteTask, changeTaskState } = useTasks()
 
