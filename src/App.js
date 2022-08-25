@@ -33,6 +33,9 @@ function App() {
     (!newUser && user) && setUser(null)
     authLoadingOnRender && setAuthLoadingOnRender(false)
   })
+  useEffect(()=>{
+    user ? localStorage.setItem('isLoggedIn', 'true') : localStorage.removeItem('isLoggedIn')
+  },[user])
 
   function logOut() {
     google.accounts.id.disableAutoSelect()

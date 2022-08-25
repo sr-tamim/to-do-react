@@ -8,6 +8,8 @@ const defaultTask = {
 }
 
 const useTasks = () => {
+    // const isLoggedIn = () => localStorage.getItem('isLoggedIn')
+
     const [tasks, setTasks] = useState([defaultTask])
     const [taskInputValue, setTaskInputValue] = useState("")
 
@@ -37,7 +39,7 @@ const useTasks = () => {
             return
         }
 
-        
+
         const newTask = {
             taskAddedTime: Date.now(),
             toDo: taskInputValue,
@@ -69,7 +71,7 @@ const useTasks = () => {
         loadTasks()
     }
     return {
-        tasks, taskInputValue, setTaskInputValue,
+        tasks, taskInputValue, setTaskInputValue, loadTasks,
         addNewTask, deleteTask, changeTaskState
     }
 };
