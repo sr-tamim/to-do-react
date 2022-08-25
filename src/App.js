@@ -46,6 +46,8 @@ function App() {
     if (!user && !authLoadingOnRender && (typeof google !== 'undefined')) {
       google.accounts.id.initialize({
         client_id: '1074914693862-4ho7v3ntlaknrphg73q4rhpo21q4ac8k.apps.googleusercontent.com',
+        cancel_on_tap_outside: false,
+        auto_select: true,
         callback: res => {
           setLoginProcessing(true)
           const credential = GoogleAuthProvider.credential(res.credential)
@@ -53,7 +55,6 @@ function App() {
             .catch(err => console.dir(err))
             .finally(() => setLoginProcessing(false))
         },
-        cancel_on_tap_outside: false
       })
       google.accounts.id.renderButton(
         document.getElementById("googleOneTap"), // Ensure the element exist and it is a div to display correcctly
