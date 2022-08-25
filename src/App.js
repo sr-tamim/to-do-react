@@ -40,7 +40,7 @@ function App() {
       .finally(() => setLoginProcessing(false))
   }
   useEffect(() => {
-    if (!user && !authLoadingOnRender && google) {
+    if (!user && !authLoadingOnRender && (typeof google !== 'undefined')) {
       google.accounts.id.initialize({
         client_id: '1074914693862-4ho7v3ntlaknrphg73q4rhpo21q4ac8k.apps.googleusercontent.com',
         callback: res => {
@@ -49,7 +49,8 @@ function App() {
           signInWithCredential(firebaseAuth, credential)
             .catch(err => console.dir(err))
             .finally(() => setLoginProcessing(false))
-        }
+        },
+        cancel_on_tap_outside: false
       })
       google.accounts.id.renderButton(
         document.getElementById("googleOneTap"), // Ensure the element exist and it is a div to display correcctly
