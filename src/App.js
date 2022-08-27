@@ -18,7 +18,7 @@ export const ModalContext = createContext()
 function App() {
   const firebaseAuth = getAuth(firebaseApp)
 
-  const { tasks, taskInputValue, setTaskInputValue, saveTasks, loadTasksFromServer,
+  const { tasks, taskInputValue, setTaskInputValue, loadTasksFromServer,
     addNewTask, deleteTask, changeTaskState } = useTasks()
 
   const modalStates = useModal()
@@ -40,7 +40,6 @@ function App() {
   function logOut() {
     signOut(firebaseAuth).then(() => {
       google.accounts.id.disableAutoSelect();
-      saveTasks([])
     }).catch((error) => console.dir(error))
       .finally(() => setLoginProcessing(false))
   }

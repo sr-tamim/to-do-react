@@ -33,7 +33,7 @@ const useTasks = () => {
 
         const notSynced = tasks.filter(task => !task._id)
         saveTasks(data)
-        notSynced.length && addManyTaskToServer(notSynced)
+        notSynced.length && addManyTaskToServer(email, notSynced)
         console.log(data, notSynced)
     }
 
@@ -75,19 +75,19 @@ const useTasks = () => {
             body: JSON.stringify(newTask)
         })
             .then(res => res.json())
-            .then(data => data?.insertedId && loadTasksFromServer(email))
+            .then(data => data?.insertedId && saveTasks(data.allTasks))
     }
-    function addManyTaskToServer(email, newTask) {
+    function addManyTaskToServer(email, newTasks) {
         if (!email) return;
-        fetch(`http://localhost:5000/.netlify/functions/server/tasks/${email}`, {
+        fetch(`http://localhost:5000/.netlify/functions/server/tasks/addMultipleTasks/${email}`, {
             method: 'POST',
             headers: {
                 'content-type': 'application/json'
             },
-            body: JSON.stringify(newTask)
+            body: JSON.stringify(newTasks)
         })
             .then(res => res.json())
-            .then(data => console.log(data))
+            .then(data => data?.insertedCount && saveTasks(data.allTasks))
     }
 
     // delete any task fron task list
@@ -106,16 +106,29 @@ const useTasks = () => {
             body: JSON.stringify(deleteTask)
         })
             .then(res => res.json())
-            .then(data => data?.deletedCount && loadTasksFromServer(email))
+            .then(data => data?.deletedCount && saveTasks(data.allTasks))
     }
 
     // change any state of any task
-    function changeTaskState(changedTask) {
+    function changeTaskState(changedTask, email) {
         const newData = [
             ...tasks.filter(task => task.taskAddedTime !== changedTask.taskAddedTime),
             changedTask
         ]
-        saveTasks(newData)
+        email ? updateTaskInServer(email, changedTask)
+            : saveTasks(newData)
+    }
+    function updateTaskInServer(email, changedTask) {
+        if (!email) return
+        fetch(`http://localhost:5000/.netlify/functions/server/tasks/${email}`, {
+            method: 'PUT',
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify(changedTask)
+        })
+            .then(res => res.json())
+            .then(data => data?.modifiedCount && saveTasks(data.allTasks))
     }
     return {
         tasks, taskInputValue, setTaskInputValue, saveTasks, loadTasksFromServer,
