@@ -38,9 +38,9 @@ function App() {
   }, [user])
 
   function logOut() {
-    signOut(firebaseAuth).then(() => {
-      google.accounts.id.disableAutoSelect();
-    }).catch((error) => console.dir(error))
+    signOut(firebaseAuth)
+      .then(() => google.accounts.id.disableAutoSelect())
+      .catch((error) => console.dir(error))
       .finally(() => setLoginProcessing(false))
   }
   useEffect(() => {
@@ -61,12 +61,12 @@ function App() {
         document.getElementById("googleOneTap"), // Ensure the element exist and it is a div to display correcctly
         { theme: "outline", size: "large", shape: 'pill' }  // Customization attributes
       );
-      google.accounts.id.prompt(noti => console.log(noti))
+      google.accounts.id.prompt(noti => console.dir(noti))
     }
   }, [user, authLoadingOnRender, firebaseAuth])
 
   return (
-    <ModalContext.Provider value={{...modalStates, user}}>
+    <ModalContext.Provider value={{ ...modalStates, user }}>
       <div className="px-3 max-w-screen-md mx-auto">
         <div className="text-center flex flex-col items-center flex-wrap max-w-lg mx-auto">
           <div>

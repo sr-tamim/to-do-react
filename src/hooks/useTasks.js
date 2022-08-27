@@ -23,7 +23,6 @@ const useTasks = () => {
         savedTasks.sort((a, b) => b.taskAddedTime - a.taskAddedTime)
 
         setTasks(savedTasks)
-        console.log('loading tasks', email)
     }
     async function loadTasksFromServer(email) {
         if (!email) return
@@ -32,9 +31,9 @@ const useTasks = () => {
         const data = await res.json()
 
         const notSynced = tasks.filter(task => !task._id)
-        saveTasks(data)
         notSynced.length && addManyTaskToServer(email, notSynced)
-        console.log(data, notSynced)
+        
+        saveTasks(data)
     }
 
     function saveTasks(newData) {
