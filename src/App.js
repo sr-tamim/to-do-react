@@ -18,7 +18,7 @@ export const ModalContext = createContext()
 function App() {
   const firebaseAuth = getAuth(firebaseApp)
 
-  const { tasks, taskInputValue, setTaskInputValue,
+  const { tasks, taskInputValue, setTaskInputValue, saveTasks, loadTasksFromServer,
     addNewTask, deleteTask, changeTaskState } = useTasks()
 
   const modalStates = useModal()
@@ -33,13 +33,15 @@ function App() {
     (!newUser && user) && setUser(null)
     authLoadingOnRender && setAuthLoadingOnRender(false)
   })
-  useEffect(()=>{
-    user ? localStorage.setItem('isLoggedIn', 'true') : localStorage.removeItem('isLoggedIn')
-  },[user])
+  useEffect(() => {
+    user && loadTasksFromServer(user.email)
+  }, [user])
 
   function logOut() {
-    google.accounts.id.disableAutoSelect()
-    signOut(firebaseAuth).catch((error) => console.dir(error))
+    signOut(firebaseAuth).then(() => {
+      google.accounts.id.disableAutoSelect();
+      saveTasks([])
+    }).catch((error) => console.dir(error))
       .finally(() => setLoginProcessing(false))
   }
   useEffect(() => {
@@ -65,7 +67,7 @@ function App() {
   }, [user, authLoadingOnRender, firebaseAuth])
 
   return (
-    <ModalContext.Provider value={modalStates}>
+    <ModalContext.Provider value={{...modalStates, user}}>
       <div className="px-3 max-w-screen-md mx-auto">
         <div className="text-center flex flex-col items-center flex-wrap max-w-lg mx-auto">
           <div>
@@ -77,7 +79,7 @@ function App() {
         </div>
 
         <div className='max-w-lg mx-auto mt-8 mb-6'>
-          <form onSubmit={addNewTask} className='flex flex-col md:flex-row'>
+          <form onSubmit={e => addNewTask(e, user?.email)} className='flex flex-col md:flex-row'>
 
             <div className="flex relative grow">
               <Input label='write new task'

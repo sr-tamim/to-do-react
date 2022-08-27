@@ -14,9 +14,9 @@ const SingleTask = ({ task, functions }) => {
 
     const timeDifference = pastTime => Math.ceil((Date.now() - pastTime) / (1000 * 60 * 60))
 
-    const { setModalBody, setModalOpen } = useContext(ModalContext)
+    const { setModalBody, setModalOpen, user } = useContext(ModalContext)
     const openDeleteModal = (taskAddedTime) => {
-        setModalBody(<DeleteModal deleteTask={() => deleteTask(taskAddedTime)} />)
+        setModalBody(<DeleteModal deleteTask={() => deleteTask(taskAddedTime, user?.email)} />)
         setModalOpen(true)
     }
 
