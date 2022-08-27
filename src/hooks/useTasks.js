@@ -64,9 +64,11 @@ const useTasks = () => {
     // sync to server functions
     function loadTasksFromServer(email) {
         if (!email) return
-        const notSynced = tasks.filter(task => !task._id)
+        // find out tasks which are not synced with server
+        const notSynced = tasks.filter(task => !task._id && task.taskAddedTime !== defaultTask.taskAddedTime)
+        
         notSynced.length ? addManyTaskToServer(email, notSynced)
-            : fetch(`http://localhost:5000/.netlify/functions/server/tasks/${email}`)
+            : fetch(`https://to-do-server.netlify.app/.netlify/functions/server/tasks/${email}`)
                 .then(res => res.json())
                 .then(data => data.length && saveTasks(data))
                 .catch(err => console.dir(err))
@@ -74,7 +76,7 @@ const useTasks = () => {
     // add single task to server
     function addTaskToServer(email, newTask) {
         if (!email) return;
-        fetch(`http://localhost:5000/.netlify/functions/server/tasks/${email}`, {
+        fetch(`https://to-do-server.netlify.app/.netlify/functions/server/tasks/${email}`, {
             method: 'POST',
             headers: {
                 'content-type': 'application/json'
@@ -86,7 +88,7 @@ const useTasks = () => {
     // add an array of tasks to server
     function addManyTaskToServer(email, newTasks) {
         if (!email) return;
-        fetch(`http://localhost:5000/.netlify/functions/server/tasks/addMultipleTasks/${email}`, {
+        fetch(`https://to-do-server.netlify.app/.netlify/functions/server/tasks/addMultipleTasks/${email}`, {
             method: 'POST',
             headers: {
                 'content-type': 'application/json'
@@ -99,7 +101,7 @@ const useTasks = () => {
     function deleteFromServer(email, taskAddedTime) {
         if (!email) return
         const deleteTask = tasks.find(task => task.taskAddedTime === taskAddedTime)
-        fetch(`http://localhost:5000/.netlify/functions/server/tasks/${email}`, {
+        fetch(`https://to-do-server.netlify.app/.netlify/functions/server/tasks/${email}`, {
             method: 'DELETE',
             headers: {
                 'content-type': 'application/json'
@@ -111,7 +113,7 @@ const useTasks = () => {
     // update single task in server
     function updateTaskInServer(email, changedTask) {
         if (!email) return
-        fetch(`http://localhost:5000/.netlify/functions/server/tasks/${email}`, {
+        fetch(`https://to-do-server.netlify.app/.netlify/functions/server/tasks/${email}`, {
             method: 'PUT',
             headers: {
                 'content-type': 'application/json'
