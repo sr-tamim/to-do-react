@@ -9,7 +9,7 @@ const defaultTask = {
 
 const useTasks = () => {
     const [tasks, setTasks] = useState([defaultTask])
-    const [tasksLoading, setTasksLoading] = useState(true)
+    const [tasksLoading, setTasksLoading] = useState(false)
     const [taskInputValue, setTaskInputValue] = useState("")
 
     const startLoading = () => setTasksLoading(true)
