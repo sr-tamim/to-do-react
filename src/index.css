@@ -20,19 +20,19 @@ code {
     monospace;
 }
 
-::-webkit-datetime-edit {
+.task-add-form ::-webkit-datetime-edit {
   display: none;
 }
 
-::-webkit-datetime-edit-fields-wrapper {
+.task-add-form ::-webkit-datetime-edit-fields-wrapper {
   display: none;
 }
 
-::-webkit-calendar-picker-indicator {
+.task-add-form ::-webkit-calendar-picker-indicator {
   background: url('../public/calendar-days-regular.svg') no-repeat;
   background-size: contain;
   background-position: center;
 }
-[hasValue]::-webkit-calendar-picker-indicator {
+.task-add-form [hasValue]::-webkit-calendar-picker-indicator {
   background: url('../public/calendar-check-regular.svg') no-repeat;
 }

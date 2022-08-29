@@ -16,6 +16,7 @@ const firebaseApp = initializeApp(firebaseConfig)
 export const ModalContext = createContext()
 
 function App() {
+  const today = new Date()
   const firebaseAuth = getAuth(firebaseApp)
 
   const { tasks, tasksLoading, taskInputValue, setTaskInputValue,
@@ -79,7 +80,7 @@ function App() {
         </div>
 
         <div className='max-w-lg mx-auto mt-8 mb-6'>
-          <form onSubmit={e => addNewTask(e, user?.email)} className='flex flex-col md:flex-row'>
+          <form onSubmit={e => addNewTask(e, user?.email)} className='task-add-form flex flex-col md:flex-row'>
 
             <div className="flex relative grow">
               <Input label='write new task'
@@ -92,7 +93,8 @@ function App() {
                   onChange={e => {
                     (e.target.value) ? e.target.setAttribute('hasValue', true) :
                       e.target.removeAttribute('hasValue')
-                  }} className="bg-transparent outline outline-0 focus:outline-0" />
+                  }} className="bg-transparent outline outline-0 focus:outline-0"
+                  min={today.getFullYear()+"-"+(today.getMonth()+1).toString().padStart(2,"0")+"-"+today.getDate().toString().padStart(2,"0")} />
               </div>
             </div>
 

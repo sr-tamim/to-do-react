@@ -2,6 +2,7 @@ import { IconButton, Typography } from '@material-tailwind/react';
 import React, { useContext } from 'react';
 import { ModalContext } from '../../App';
 import DeleteModal from '../Modals/DeleteModal';
+import DetailsModal from '../Modals/DetailsModal';
 import './SingleTask.css'
 
 const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
@@ -20,15 +21,16 @@ const SingleTask = ({ task, functions }) => {
         setModalOpen(true)
     }
 
-    const openDetailsModal = (taskAddedTime) => {
-        console.log(taskAddedTime)
+    const openDetailsModal = (task) => {
+        setModalBody(<DetailsModal task={task} functions={{changeTaskState}} />)
+        setModalOpen(true)
     }
 
     return (
         <div className={`flex items-center bg-[#ffffff66] backdrop-blur-sm
         md:backdrop-blur-none md:hover:backdrop-blur-sm p-4 rounded-lg
         cursor-pointer shadow-md hover:shadow-lg transition duration-300`}
-            onClick={() => openDetailsModal(task.taskAddedTime)}>
+            onClick={() => openDetailsModal(task)}>
             <div className='grow'>
                 <Typography variant="h5" className={`first-letter:uppercase mb-2 ${task.taskDone && 'line-through'}`}>{task.toDo}</Typography>
 
@@ -57,7 +59,7 @@ const SingleTask = ({ task, functions }) => {
                         </time>}
                 </div>
             </div>
-            <div className='flex items-center gap-3'>
+            <div className='flex items-center gap-3' onClick={e=>e.stopPropagation()}>
                 <IconButton size='sm' variant={task.taskDone ? "gradient" : "outlined"}
                     className="shadow-md"
                     onClick={() => changeTaskState({
