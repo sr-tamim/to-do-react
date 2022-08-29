@@ -9,7 +9,11 @@ const defaultTask = {
 
 const useTasks = () => {
     const [tasks, setTasks] = useState([defaultTask])
+    const [tasksLoading, setTasksLoading] = useState(true)
     const [taskInputValue, setTaskInputValue] = useState("")
+
+    const startLoading = () => setTasksLoading(true)
+    const stopLoading = () => setTasksLoading(false)
 
     useEffect(loadTasks, [])
     // load all tasks function
@@ -64,18 +68,21 @@ const useTasks = () => {
     // sync to server functions
     function loadTasksFromServer(email) {
         if (!email) return
+        startLoading()
         // find out tasks which are not synced with server
         const notSynced = tasks.filter(task => !task._id && task.taskAddedTime !== defaultTask.taskAddedTime)
-        
+
         notSynced.length ? addManyTaskToServer(email, notSynced)
             : fetch(`https://to-do-server.netlify.app/.netlify/functions/server/tasks/${email}`)
                 .then(res => res.json())
                 .then(data => data.length && saveTasks(data))
                 .catch(err => console.dir(err))
+                .finally(stopLoading)
     }
     // add single task to server
     function addTaskToServer(email, newTask) {
         if (!email) return;
+        startLoading()
         fetch(`https://to-do-server.netlify.app/.netlify/functions/server/tasks/${email}`, {
             method: 'POST',
             headers: {
@@ -84,10 +91,13 @@ const useTasks = () => {
             body: JSON.stringify(newTask)
         }).then(res => res.json())
             .then(data => data?.insertedId && saveTasks(data.allTasks))
+            .catch(err => console.dir(err))
+            .finally(stopLoading)
     }
     // add an array of tasks to server
     function addManyTaskToServer(email, newTasks) {
         if (!email) return;
+        startLoading()
         fetch(`https://to-do-server.netlify.app/.netlify/functions/server/tasks/addMultipleTasks/${email}`, {
             method: 'POST',
             headers: {
@@ -96,10 +106,13 @@ const useTasks = () => {
             body: JSON.stringify(newTasks)
         }).then(res => res.json())
             .then(data => data?.insertedCount && saveTasks(data.allTasks))
+            .catch(err => console.dir(err))
+            .finally(stopLoading)
     }
     // delete single task from server
     function deleteFromServer(email, taskAddedTime) {
         if (!email) return
+        startLoading()
         const deleteTask = tasks.find(task => task.taskAddedTime === taskAddedTime)
         fetch(`https://to-do-server.netlify.app/.netlify/functions/server/tasks/${email}`, {
             method: 'DELETE',
@@ -109,10 +122,13 @@ const useTasks = () => {
             body: JSON.stringify(deleteTask)
         }).then(res => res.json())
             .then(data => data?.deletedCount && saveTasks(data.allTasks))
+            .catch(err => console.dir(err))
+            .finally(stopLoading)
     }
     // update single task in server
     function updateTaskInServer(email, changedTask) {
         if (!email) return
+        startLoading()
         fetch(`https://to-do-server.netlify.app/.netlify/functions/server/tasks/${email}`, {
             method: 'PUT',
             headers: {
@@ -121,10 +137,12 @@ const useTasks = () => {
             body: JSON.stringify(changedTask)
         }).then(res => res.json())
             .then(data => data?.modifiedCount && saveTasks(data.allTasks))
+            .catch(err => console.dir(err))
+            .finally(stopLoading)
     }
     return {
         tasks, taskInputValue, setTaskInputValue, loadTasksFromServer,
-        addNewTask, deleteTask, changeTaskState
+        addNewTask, deleteTask, changeTaskState, tasksLoading
     }
 };
 

@@ -18,8 +18,8 @@ export const ModalContext = createContext()
 function App() {
   const firebaseAuth = getAuth(firebaseApp)
 
-  const { tasks, taskInputValue, setTaskInputValue, loadTasksFromServer,
-    addNewTask, deleteTask, changeTaskState } = useTasks()
+  const { tasks, tasksLoading, taskInputValue, setTaskInputValue,
+    loadTasksFromServer, addNewTask, deleteTask, changeTaskState } = useTasks()
 
   const modalStates = useModal()
   const { modalOpen, modalBody, closeModal } = modalStates
@@ -122,7 +122,9 @@ function App() {
               </div>
             }
           </div>}
-        <ToDoBody taskState={{ tasks, deleteTask, changeTaskState }} />
+
+        {/* show all tasks container */}
+        <ToDoBody taskState={{ tasks, tasksLoading, deleteTask, changeTaskState }} />
       </div>
 
       {modalBody && <Dialog open={modalOpen} handler={closeModal} size="xl" className={`w-11/12 min-w-min max-w-max`}>
