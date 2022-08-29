@@ -124,7 +124,7 @@ function App() {
           </div>}
 
         {/* show all tasks container */}
-        <ToDoBody taskState={{ tasks, tasksLoading, deleteTask, changeTaskState }} />
+        <ToDoBody taskState={{ tasks, tasksLoading, authLoadingOnRender, deleteTask, changeTaskState }} />
       </div>
 
       {modalBody && <Dialog open={modalOpen} handler={closeModal} size="xl" className={`w-11/12 min-w-min max-w-max`}>
