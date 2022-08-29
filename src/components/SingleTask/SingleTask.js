@@ -21,21 +21,21 @@ const SingleTask = ({ task, functions }) => {
     }
 
     return (
-        <div className='flex items-center bg-[#ffffff66] hover:backdrop-blur-sm p-4 rounded-lg shadow-md hover:shadow-lg transition duration-300'>
+        <div className='flex items-center bg-[#ffffff66] backdrop-blur-sm md:backdrop-blur-none md:hover:backdrop-blur-sm p-4 rounded-lg shadow-md hover:shadow-lg transition duration-300'>
             <div className='grow'>
                 <Typography variant="h5" className={`first-letter:uppercase mb-2 ${task.taskDone && 'line-through'}`}>{task.toDo}</Typography>
 
                 <div className="taskInformations">
-                    <time className="text-gray-500 text-xs"
+                    <time className="text-xs"
                         dateTime={taskAddedTime}
                         title={taskAddedTime.toLocaleString()}>
                         Created on {
-                            timeDifference(task.taskAddedTime) < 24 ? `${taskAddedTime.getHours()}:${taskAddedTime.getMinutes()}`
-                                : `${taskAddedTime.getDate()} ${months[taskAddedTime.getMonth()]}`
+                            timeDifference(task.taskAddedTime) < 24 ? `${taskAddedTime.getHours().toString().padStart(2, "0")}:${taskAddedTime.getMinutes().toString().padStart(2, "0")}`
+                                : `${taskAddedTime.getDate().toString().padStart(2, "0")} ${months[taskAddedTime.getMonth()]}`
                         }
                     </time>
                     {task.taskDoneTime &&
-                        <time className='text-gray-500 text-xs'
+                        <time className='text-xs'
                             dateTime={taskDoneTime}
                             title={taskDoneTime.toLocaleString()}>
                             Done on {
@@ -44,7 +44,7 @@ const SingleTask = ({ task, functions }) => {
                             }
                         </time>}
                     {task.dueDate &&
-                        <time className='text-gray-500 text-xs'
+                        <time className='text-xs'
                             dateTime={task.dueDate}>
                             Due Date: {`${task.dueDate.split('-')[2]} ${months[task.dueDate.split('-')[1] - 1]}`}
                         </time>}
