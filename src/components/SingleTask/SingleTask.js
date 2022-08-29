@@ -1,7 +1,7 @@
 import { IconButton, Typography } from '@material-tailwind/react';
 import React, { useContext } from 'react';
 import { ModalContext } from '../../App';
-import DeleteModal from '../DeleteModal';
+import DeleteModal from '../Modals/DeleteModal';
 import './SingleTask.css'
 
 const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
@@ -20,8 +20,15 @@ const SingleTask = ({ task, functions }) => {
         setModalOpen(true)
     }
 
+    const openDetailsModal = (taskAddedTime) => {
+        console.log(taskAddedTime)
+    }
+
     return (
-        <div className='flex items-center bg-[#ffffff66] backdrop-blur-sm md:backdrop-blur-none md:hover:backdrop-blur-sm p-4 rounded-lg shadow-md hover:shadow-lg transition duration-300'>
+        <div className={`flex items-center bg-[#ffffff66] backdrop-blur-sm
+        md:backdrop-blur-none md:hover:backdrop-blur-sm p-4 rounded-lg
+        cursor-pointer shadow-md hover:shadow-lg transition duration-300`}
+            onClick={() => openDetailsModal(task.taskAddedTime)}>
             <div className='grow'>
                 <Typography variant="h5" className={`first-letter:uppercase mb-2 ${task.taskDone && 'line-through'}`}>{task.toDo}</Typography>
 
