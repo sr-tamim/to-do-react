@@ -70,9 +70,9 @@ const useTasks = () => {
         if (!email) return
         startLoading()
         // find out tasks which are not synced with server
-        const notSynced = tasks.filter(task => !task._id && task.taskAddedTime !== defaultTask.taskAddedTime)
+        const tasksNotAddedInServer = tasks.filter(task => !task._id && (task.taskAddedTime !== defaultTask.taskAddedTime))
 
-        notSynced.length ? addManyTaskToServer(email, notSynced)
+        tasksNotAddedInServer.length ? addManyTaskToServer(email, tasksNotAddedInServer)
             : fetch(`https://to-do-server.netlify.app/.netlify/functions/server/tasks/${email}`)
                 .then(res => res.json())
                 .then(data => data.length && saveTasks(data))
