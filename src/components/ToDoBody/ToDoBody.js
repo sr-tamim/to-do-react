@@ -30,7 +30,7 @@ export default function ToDoBody({ taskState }) {
             </TabsHeader>
             <TabsBody>
                 {tasksLoading && !authLoadingOnRender && <div
-                className="absolute left-0 top-0 w-full h-full z-10">
+                className="absolute left-0 top-0 w-full h-full z-10 backdrop-blur-sm">
                     <Typography color="blue"
                         className="block mx-auto w-10 h-10 md:w-16 md:h-16 max-w-full max-h-full my-12">
                         <LoadingSpinner />
