@@ -4,7 +4,7 @@ import {
     TabsBody,
     Tab,
     TabPanel,
-    IconButton,
+    Typography,
 } from "@material-tailwind/react";
 import { LoadingSpinner } from "../../icons";
 import SingleTask from "../SingleTask/SingleTask";
@@ -29,16 +29,19 @@ export default function ToDoBody({ taskState }) {
                 ))}
             </TabsHeader>
             <TabsBody>
-                {tasksLoading && !authLoadingOnRender && <IconButton variant="text"
-                    className="block mx-auto w-20 h-20 md:w-28 md:h-28 max-w-full max-h-full my-12">
-                    <LoadingSpinner />
-                </IconButton>
+                {tasksLoading && !authLoadingOnRender && <div
+                className="absolute left-0 top-0 w-full h-full z-10">
+                    <Typography color="blue"
+                        className="block mx-auto w-10 h-10 md:w-16 md:h-16 max-w-full max-h-full my-12">
+                        <LoadingSpinner />
+                    </Typography>
+                </div>
                 }
                 {data.map(({ label, tasks }, i) => (
                     <TabPanel key={i} value={label}
                         id={`${label}-tab`}
                         className="flex flex-col gap-4">
-                        {tasks.map((task, i) => !tasksLoading && <SingleTask task={task}
+                        {tasks.map((task, i) => <SingleTask task={task}
                             functions={{ deleteTask, changeTaskState }}
                             key={i} />
                         )}
