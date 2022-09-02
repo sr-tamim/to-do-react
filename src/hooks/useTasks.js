@@ -89,7 +89,7 @@ const useTasks = () => {
                         data.length && saveTasks(data)
                         return
                     }
-                    fetch(`http://localhost:5000/.netlify/functions/server/tasks/updateMultipleTasks/${email}`, {
+                    fetch(`https://to-do-server.netlify.app/.netlify/functions/server/tasks/updateMultipleTasks/${email}`, {
                         method: 'POST',
                         headers: {
                             'content-type': 'application/json'
