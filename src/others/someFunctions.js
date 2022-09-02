@@ -1,5 +1,7 @@
 
 export function isSameObjects(object1, object2) {
+    if(typeof object1 !== 'object' || typeof object2 !== 'object') return 'error'
+
     // if the number of keys in both objects aren't same it'll return false
     if (Object.keys(object1).length !== Object.keys(object2).length) { return false }
     // if any property value in both objects aren't same it'll return false

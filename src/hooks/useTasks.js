@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { isSameObjects } from "../others/someFunctions";
 
 const defaultTask = {
     taskAddedTime: 1660971431388,
@@ -75,7 +76,28 @@ const useTasks = () => {
         tasksNotAddedInServer.length ? addManyTaskToServer(email, tasksNotAddedInServer)
             : fetch(`https://to-do-server.netlify.app/.netlify/functions/server/tasks/${email}`)
                 .then(res => res.json())
-                .then(data => data.length && saveTasks(data))
+                .then(data => {
+                    const changedTasks = []
+                    tasks.forEach(task => {
+                        const targetTask = data.find(item => item.taskAddedTime === task.taskAddedTime);
+
+                        (!isSameObjects(task, targetTask) &&
+                            (data.find(item => item.taskAddedTime === task.taskAddedTime)?.modifiedTime < task?.modifiedTime))
+                            && changedTasks.push(task);
+                    })
+                    if (!changedTasks.length) {
+                        data.length && saveTasks(data)
+                        return
+                    }
+                    fetch(`http://localhost:5000/.netlify/functions/server/tasks/updateMultipleTasks/${email}`, {
+                        method: 'POST',
+                        headers: {
+                            'content-type': 'application/json'
+                        },
+                        body: JSON.stringify(changedTasks)
+                    }).then(res => res.json())
+                        .then(data => data?.nModified && saveTasks(data.allTasks))
+                })
                 .catch(err => console.dir(err))
                 .finally(stopLoading)
     }
