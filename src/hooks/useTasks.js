@@ -46,8 +46,9 @@ const useTasks = () => {
             taskDoneTime: null,
             dueDate: (e.target.querySelector('input[type="date"]').value)
         }
-        e.target.reset() // reset the form
-        setTaskInputValue('') // reset task input value state
+        e.target.reset(); // reset the form
+        setTaskInputValue(''); // reset task input value state
+        e.target.querySelector('input[type="date"]').removeAttribute('hasValue');
 
         email ? addTaskToServer(email, newTask)
             : saveTasks([...tasks, newTask])
