@@ -8,7 +8,7 @@ import { createContext, useEffect, useState } from "react";
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import firebaseConfig from "./firebase.config";
-import { getAuth, GoogleAuthProvider, onAuthStateChanged, signOut, signInWithCredential } from "firebase/auth";
+import { getAuth, GoogleAuthProvider, onAuthStateChanged, signOut, signInWithCredential, signInWithPopup } from "firebase/auth";
 import { LoadingSpinner } from "./icons";
 
 const firebaseApp = initializeApp(firebaseConfig)
@@ -38,16 +38,27 @@ function App() {
     user && loadTasksFromServer(user.email)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user])
+  const [GOOGLE, setGOOGLE] = useState(typeof google !== 'undefined' ? google : null)
+  const defineGoogle = setInterval(() => typeof google !== 'undefined' && setGOOGLE(google), 1000)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => GOOGLE && clearInterval(defineGoogle), [GOOGLE])
 
+  function logIn() {
+    setLoginProcessing(true)
+    const provider = new GoogleAuthProvider()
+    signInWithPopup(firebaseAuth, provider)
+      .catch(error => console.dir(error))
+      .finally(() => setLoginProcessing(false))
+  }
   function logOut() {
     signOut(firebaseAuth)
-      .then(() => google.accounts.id.disableAutoSelect())
+      .then(() => GOOGLE.accounts.id.disableAutoSelect())
       .catch((error) => console.dir(error))
       .finally(() => setLoginProcessing(false))
   }
   useEffect(() => {
-    if (!user && !authLoadingOnRender && (typeof google !== 'undefined')) {
-      google.accounts.id.initialize({
+    if (!user && !authLoadingOnRender && GOOGLE) {
+      GOOGLE.accounts.id.initialize({
         client_id: '1074914693862-4ho7v3ntlaknrphg73q4rhpo21q4ac8k.apps.googleusercontent.com',
         cancel_on_tap_outside: false,
         auto_select: true,
@@ -59,13 +70,13 @@ function App() {
             .finally(() => setLoginProcessing(false))
         },
       })
-      google.accounts.id.renderButton(
+      GOOGLE.accounts.id.renderButton(
         document.getElementById("googleOneTap"), // Ensure the element exist and it is a div to display correcctly
         { theme: "outline", size: "large", shape: 'pill' }  // Customization attributes
       );
-      google.accounts.id.prompt(noti => console.dir(noti))
+      GOOGLE.accounts.id.prompt(noti => console.dir(noti))
     }
-  }, [user, authLoadingOnRender, firebaseAuth])
+  }, [user, authLoadingOnRender, firebaseAuth, GOOGLE])
 
   return (
     <ModalContext.Provider value={{ ...modalStates, user }}>
@@ -94,7 +105,7 @@ function App() {
                     (e.target.value) ? e.target.setAttribute('hasValue', true) :
                       e.target.removeAttribute('hasValue')
                   }} className="bg-transparent outline outline-0 focus:outline-0"
-                  min={today.getFullYear()+"-"+(today.getMonth()+1).toString().padStart(2,"0")+"-"+today.getDate().toString().padStart(2,"0")} />
+                  min={today.getFullYear() + "-" + (today.getMonth() + 1).toString().padStart(2, "0") + "-" + today.getDate().toString().padStart(2, "0")} />
               </div>
             </div>
 
@@ -109,8 +120,10 @@ function App() {
         </IconButton>
           : !authLoadingOnRender && <div className="text-center">
             {!user ? <div>
-              <Typography className="font-bold text-xs mb-1">Login to sync through devices</Typography>
-              <button id="googleOneTap"></button>
+              <Typography className="font-bold text-xs mb-2">Login to sync through devices</Typography>
+              {GOOGLE ? <button id="googleOneTap"></button>
+                : <Button variant="gradient" size="sm"
+                  onClick={logIn}>Sign in with Google</Button>}
             </div>
               : <div>
                 <Menu>
