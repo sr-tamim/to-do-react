@@ -1,5 +1,5 @@
 /* global google */
-import { Button, IconButton, Input, Menu, MenuHandler, MenuItem, MenuList, Typography } from "@material-tailwind/react";
+import { Avatar, Button, IconButton, Input, Menu, MenuHandler, MenuItem, MenuList, Typography } from "@material-tailwind/react";
 import useTasks from './hooks/useTasks';
 import ToDoBody from './components/ToDoBody/ToDoBody';
 import useModal from "./hooks/useModal";
@@ -84,9 +84,7 @@ function App() {
         <div className="text-center flex flex-col items-center flex-wrap max-w-lg mx-auto">
           <div>
             <Typography variant="h1" className="uppercase">To do app</Typography>
-            <Typography variant="h6">
-              Made by <a href="https://sr-tamim.vercel.app" target='_blank' rel='noreferrer' className='underline hover_text-primary hover_no-underline'>SR TAMIM</a>
-            </Typography>
+            <a href="https://sr-tamim.vercel.app" target='_blank' rel='noreferrer' className='underline font-semibold hover_text-primary hover_no-underline'>Made by SR TAMIM</a>
           </div>
         </div>
 
@@ -128,7 +126,10 @@ function App() {
               : <div>
                 <Menu>
                   <MenuHandler>
-                    <Button variant="text" size="lg">{user.displayName}</Button>
+                    <Button variant="text" size="lg">
+                      <Avatar src={user.photoURL} size="sm" className="mr-2" variant="circular" />
+                      {user.displayName}
+                    </Button>
                   </MenuHandler>
                   <MenuList className="font-bold">
                     <MenuItem onClick={logOut}>Logout</MenuItem>
