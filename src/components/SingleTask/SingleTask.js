@@ -27,7 +27,7 @@ const SingleTask = ({ task, functions }) => {
     }
 
     return (
-        <div className={`flex items-center bg-[#ffffff66] backdrop-blur-sm
+        <div className={`flex items-center bg-[#ffffffaa] backdrop-blur-sm
         md:backdrop-blur-none md:hover:backdrop-blur-sm p-4 rounded-lg
         cursor-pointer shadow-md hover:shadow-lg transition duration-300`}
             onClick={() => openDetailsModal(task)}>

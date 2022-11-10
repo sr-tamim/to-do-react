@@ -13,14 +13,14 @@ import SingleTask from "../SingleTask/SingleTask";
 export default function ToDoBody({ taskState }) {
     const { tasks, tasksLoading, authLoadingOnRender, deleteTask, changeTaskState } = taskState
 
-    const tabs = ["todo", "done"]
+    const tabs = ["tasks", "done"]
     const data = [
-        { label: "todo", tasks: tasks.filter(task => !task.taskDone) },
+        { label: "tasks", tasks: tasks.filter(task => !task.taskDone) },
         { label: "done", tasks: tasks.filter(task => task.taskDone) }
     ]
 
     return (
-        <Tabs value="todo" className="my-12">
+        <Tabs value="tasks" className="my-12">
             <TabsHeader className="max-w-xs mx-auto">
                 {tabs.map((value, i) => (
                     <Tab key={i} value={value} className="uppercase">
@@ -46,7 +46,7 @@ export default function ToDoBody({ taskState }) {
                             key={i} />
                         )}
                         <img src={`${label}.png`} alt={label}
-                            className="fixed left-0 bottom-0 max-w-full z-[-1] opacity-40" />
+                            className="fixed left-0 bottom-0 max-w-full z-[-1] opacity-20" />
                     </TabPanel>
                 ))}
             </TabsBody>
